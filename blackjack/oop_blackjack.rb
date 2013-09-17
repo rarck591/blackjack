@@ -1,3 +1,6 @@
+require 'rubygems'
+require 'pry'
+
 # Object Oriented Blackjack Game
 
 # 1)  Abstraction
@@ -12,11 +15,48 @@ class Card
   end
 
   def pretty_output
-    puts "The #{@face_value} of #{@suit}"
+    puts "The #{face_value} of #{find_suit}"
+  end
+
+  def to_s
+    pretty_output
+  end
+
+  def find_suit
+    ret_val = case suit
+                when 'H' then 'Hearts'
+                when 'D' then 'Diamonds'
+                when 'S' then 'Spades'
+                when 'C' then 'Clubs'
+              end
+    ret_val  
   end
 end
 
 class Deck
+  attr_accessor :cards
+
+  def initialize
+    @cards = []
+    ['H', 'D', 'S', 'C'].each do |suit|
+      ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'].each do |face_value|
+        @cards << Card.new(suit, face_value)
+      end
+    end
+    scramble!
+  end
+
+  def scramble!
+    cards.shuffle!
+  end
+
+  def deal_one
+    cards.pop
+  end
+
+  def size
+    cards.size
+  end
 end
 
 class Player
@@ -28,17 +68,4 @@ end
 class Hand
 end
 
-c1 = Card.new('H', '3')
-c2 = Card.new('D', '4')
-
-c1.pretty_output
-c2.pretty_output
-
-puts c1.suit
-puts c2.suit
-
-c1.suit = "New Suit for C1"
-c2.suit = "New Suit for C2"
-
-puts c1.suit
-puts c2.suit
+deck = Deck.new
